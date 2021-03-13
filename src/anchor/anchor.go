@@ -1,8 +1,13 @@
 package anchor
 
-const rss = "https://anchor.fm/s/1157ae34/podcast/rss"
+import (
+	"encoding/xml"
+	"io/ioutil"
+	"log"
+	"net/http"
+)
 
-type xmlStruct struct {
+type anchorStruct struct {
 	Title       string    `xml:"channel>title"`
 	Episodes    []episode `xml:"channel>item"`
 	Description string    `xml:"channel>description"`
@@ -18,7 +23,7 @@ type enclosure struct {
 	URL string `xml:"url,attr"`
 }
 
-func parseFeed(url string) {
+func ParseFeed(url string) anchorStruct {
 	resp, err := http.Get(url)
 
 	if err != nil {
@@ -30,8 +35,8 @@ func parseFeed(url string) {
 		log.Fatal("[ERROR] error reading RSS feed")
 	}
 
-	var xmlData xmlStruct
-	xml.Unmarshal(data, &xmlData)
+	var anchorData anchorStruct
+	xml.Unmarshal(data, &anchorData)
 
-	fmt.Println(xmlData.Episodes[0].Enclosure)
+	return anchorData
 }

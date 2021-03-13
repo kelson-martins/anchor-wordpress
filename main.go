@@ -1,17 +1,16 @@
 package main
 
 import (
-	"encoding/xml"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
 
-	"github.com/kelson-martins/anchor-wordpress/anchor"
+	"github.com/kelson-martins/anchor-wordpress/src/anchor"
 )
 
-
+const anchorURL = "https://anchor.fm/s/1157ae34/podcast/rss"
 
 func main() {
-	anchor.parseFeed(rss)
+
+	anchorData := anchor.ParseFeed(anchorURL)
+
+	fmt.Println(anchorData)
 }

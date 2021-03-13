@@ -1,3 +1,3 @@
-module github.com/kelson-martins/anchor-wordpresss
+module github.com/kelson-martins/anchor-wordpress
 
 go 1.13
