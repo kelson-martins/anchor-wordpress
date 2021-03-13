@@ -1,16 +1,13 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/kelson-martins/anchor-wordpress/src/anchor"
+	"github.com/kelson-martins/anchor-wordpress/src/hardcodecast"
+	"github.com/kelson-martins/anchor-wordpress/src/wordpress"
 )
-
-const anchorURL = "https://anchor.fm/s/1157ae34/podcast/rss"
 
 func main() {
 
-	anchorData := anchor.ParseFeed(anchorURL)
-
-	fmt.Println(anchorData)
+	latestHardcodePost := hardcodecast.PostLatest("https://anchor.fm/s/1157ae34/podcast/rss", "https://hardcodecast.com/wp-json/wp/v2/posts")
+	// fmt.Println(latestHardcodePost)
+	wordpress.PostArticle(latestHardcodePost)
 }
