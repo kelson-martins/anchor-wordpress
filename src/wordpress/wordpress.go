@@ -62,13 +62,12 @@ func PostArticle(post Post) {
 			"comment_status": "%v",
 			"title":          "%v",
 			"content":        "%v",
+			"format":         "audio",
 			"categories": [ %v ]
 		}	
 	`, post.Status, post.Comment_status, post.Title, content, categoryString)
 
 	data := []byte(dataString)
-
-	fmt.Println(dataString)
 
 	req, err := http.NewRequest("POST", postUrl, bytes.NewBuffer(data))
 
@@ -86,16 +85,14 @@ func PostArticle(post Post) {
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal("Error reading response. ", err)
+	} else {
+		fmt.Println("Article posted")
 	}
 	defer resp.Body.Close()
 
-	fmt.Println("response Status:", resp.Status)
-	fmt.Println("response Headers:", resp.Header)
-
-	body, err := ioutil.ReadAll(resp.Body)
+	_, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal("Error reading body. ", err)
 	}
 
-	fmt.Printf("%s\n", body)
 }

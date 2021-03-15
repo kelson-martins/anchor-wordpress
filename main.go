@@ -8,6 +8,5 @@ import (
 func main() {
 
 	latestHardcodePost := hardcodecast.PostLatest("https://anchor.fm/s/1157ae34/podcast/rss", "https://hardcodecast.com/wp-json/wp/v2/posts")
-	// fmt.Println(latestHardcodePost)
 	wordpress.PostArticle(latestHardcodePost)
 }
