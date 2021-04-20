@@ -20,30 +20,29 @@ type Post struct {
 	Auth_pass      string
 	Categories     []string
 	Content        string
+	Slug           string
+	Format         string
 }
 
-func fetchCategory(title string) int {
-	ci := 56
-	eb := 58
+func getCategories(categories []string) string {
 
-	var toReturn int
+	var parsedCategories string
 
-	if strings.Contains(title, "Internacional") {
-		toReturn = ci
-	} else if strings.Contains(title, "Escovando") {
-		toReturn = eb
-	} else {
-		toReturn = 0
+	for i, v := range categories {
+
+		if i > 0 {
+			parsedCategories = parsedCategories + ","
+		}
+
+		parsedCategories = fmt.Sprint(parsedCategories, '"', v, '"')
 	}
 
-	return toReturn
+	return parsedCategories
+
 }
 
 func PostArticle(post Post) {
 
-	categoryString := ""
-
-	category := fetchCategory(post.Title)
 	postUrl := post.Url
 
 	content := strings.Replace(post.Content, "<p>", "", -1)
@@ -52,20 +51,16 @@ func PostArticle(post Post) {
 	content = strings.Replace(content, "</strong>", "", -1)
 	content = strings.Replace(content, "\n", "", -1)
 
-	if category > 0 {
-		categoryString = fmt.Sprintf(`"%v"`, category)
-	}
-
 	dataString := fmt.Sprintf(`
 		{
 			"status":         "%v",
 			"comment_status": "%v",
 			"title":          "%v",
 			"content":        "%v",
-			"format":         "audio",
+			"format":         "%v",
 			"categories": [ %v ]
 		}	
-	`, post.Status, post.Comment_status, post.Title, content, categoryString)
+	`, post.Status, post.Comment_status, post.Title, content, post.Format, getCategories(post.Categories))
 
 	data := []byte(dataString)
 

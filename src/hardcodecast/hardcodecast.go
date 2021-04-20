@@ -3,10 +3,28 @@ package hardcodecast
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/kelson-martins/anchor-wordpress/src/anchor"
 	"github.com/kelson-martins/anchor-wordpress/src/wordpress"
 )
+
+func fetchCategories(title string) []string {
+	ci := "56"
+	eb := "58"
+
+	var toReturn []string
+
+	if strings.Contains(title, "Internacional") {
+		toReturn = []string{ci}
+	} else if strings.Contains(title, "Escovando") {
+		toReturn = []string{eb}
+	} else {
+		toReturn = []string{}
+	}
+
+	return toReturn
+}
 
 func PostLatest(anchorURL string, wordpressURL string) wordpress.Post {
 
@@ -25,10 +43,12 @@ func PostLatest(anchorURL string, wordpressURL string) wordpress.Post {
 		Url:            wordpressURL,
 		Status:         "draft",
 		Comment_status: "open",
+		Format:         "audio",
 		Title:          anchorData.Episodes[0].Title,
 		Auth_user:      wordpressUser,
 		Auth_pass:      wordpressPass,
 		Content:        content,
+		Categories:     fetchCategories(anchorData.Title),
 	}
 
 	fmt.Println("Latest Episode: " + anchorData.Episodes[0].Title)
