@@ -2,6 +2,7 @@ package hardcodecast
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -12,13 +13,15 @@ import (
 func fetchCategories(title string) []string {
 	ci := "56"
 	eb := "58"
+	bp := "60"
 
 	var toReturn []string
-
-	if strings.Contains(title, "Internacional") {
+	if strings.Contains(strings.ToLower(title), "internacional") {
 		toReturn = []string{ci}
-	} else if strings.Contains(title, "Escovando") {
+	} else if strings.Contains(strings.ToLower(title), "escovando") {
 		toReturn = []string{eb}
+	} else if strings.Contains(strings.ToLower(title), "byte papo") {
+		toReturn = []string{bp}
 	} else {
 		toReturn = []string{}
 	}
@@ -48,11 +51,13 @@ func PostLatest(anchorURL string, wordpressURL string) wordpress.Post {
 		Auth_user:      wordpressUser,
 		Auth_pass:      wordpressPass,
 		Content:        content,
-		Categories:     fetchCategories(anchorData.Title),
+		Categories:     fetchCategories(anchorData.Episodes[0].Title),
 	}
 
-	fmt.Println("Latest Episode: " + anchorData.Episodes[0].Title)
-	fmt.Printf("Post into Wordpress? [Y/n]: ")
+	log.Println("[INFO] Latest Episode:" + anchorData.Episodes[0].Title)
+	log.Println("[INFO] Audio link:", audioLink)
+	log.Println("[INFO] Category:", post.Categories)
+	log.Println("[INFO] Post into Wordpress? [Y/n]: ")
 
 	fmt.Scan(&postConfirmation)
 

@@ -34,7 +34,7 @@ func getCategories(categories []string) string {
 			parsedCategories = parsedCategories + ","
 		}
 
-		parsedCategories = fmt.Sprint(parsedCategories, '"', v, '"')
+		parsedCategories = v
 	}
 
 	return parsedCategories
@@ -78,8 +78,8 @@ func PostArticle(post Post) {
 
 	// send request
 	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal("Error reading response. ", err)
+	if err != nil || resp.StatusCode != 201 {
+		log.Fatalln("Error reading response. Error: ", err, "\nResponse:", resp)
 	} else {
 		fmt.Println("Article posted")
 	}
